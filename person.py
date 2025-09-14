@@ -20,7 +20,7 @@ class Person:
         self.name = name
         self.location = location
         self.title = title
-        #skills
+        #Skills
         self.strength = Person.randskill()
         self.oration = Person.randskill()
         self.persuasion = Person.randskill()
@@ -55,7 +55,6 @@ class Person:
         string += skilladjectives[self.strategy]+' at military strategy, and '
         string += skilladjectives[self.writing]+' at writing. '
         return string
-
 
 print(Person())
 
