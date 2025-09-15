@@ -6,6 +6,7 @@ lnames = open('lnames.txt','r').read().split('\n')
 personalities = open('personalities.txt').read().split('\n')
 skilladjectives = ['absolutely horrible','horrible','awful','bad','not great','average','decent','good','great','incredible','absolutely incredible']
 class Person:
+    lastindex = 0
     def __init__(self,
                  gender = choice(['M','F']),
                  country = 'Rome',
@@ -28,6 +29,15 @@ class Person:
         self.writing = Person.randskill() 
         self.diplomacy = Person.randskill()
         self.personality = personality
+        self.index = Person.lastindex
+        Person.lastindex += 1
+
+    def getrelation(self,other):
+        if self.index == other.index:
+            return 'the same person'
+        else:
+            return 'a complete stranger'
+
 
     def randskill():
         coinflips = [randint(0,1) for i in range(8)]
@@ -43,7 +53,6 @@ class Person:
         mname = mname.split(' ')[genderindex]
         lname = choice(lnames)
         return ' '.join([fname.title(),mname.title(),lname.title()])
-
 
     def __repr__(self):
         string =  self.name+', of '+self.country+'. '

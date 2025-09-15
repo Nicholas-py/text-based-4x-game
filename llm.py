@@ -9,4 +9,5 @@ async def asyncresponse(message):
         return (await model.respond(message))
         
 def syncresponse(message):
-    return syncmodel.respond(message)
+    result = syncmodel.respond(message)
+    return str(result)
