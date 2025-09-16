@@ -5,9 +5,11 @@ class Relation:
         
         self.p1 = p1
         self.p2 = p2
-        self.commonancestor = self.getCommonAncestor()
-        if self.commonancestor:
-            self.p1gens, self.p2gens = self.getGensToAncestor(self.p1), self.getGensToAncestor(self.p2)
+        self.bio = self.getCommonAncestor() is not None
+        if self.bio:
+            self.commonancestor = self.getCommonAncestor()
+            if self.commonancestor:
+                self.p1gens, self.p2gens = self.getGensToAncestor(self.p1), self.getGensToAncestor(self.p2)
     
     def getGensToAncestor(self, person):
         queue = deque([(person,0)])
