@@ -3,7 +3,7 @@ class Coords:
         if y == None:
             if (isinstance(x,str)):
                 
-                data = x.replace('(','').replace(')','').split(',')
+                data = x.replace('(','').replace(')','').replace(' ','').split(',')
                 self.x = data[0]
                 self.y = data[1]
             else:               

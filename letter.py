@@ -1,5 +1,7 @@
 from llm import syncresponse
 from person import Person
+from relation import Relation
+
 #temporary, until brought into own class
 skilladjectives = ['absolutely horrible','horrible','awful','bad','not great','average','decent','good','great','incredible','absolutely incredible']
 class Letter:
@@ -12,8 +14,8 @@ class Letter:
 
     def aiprompt(self):
         string = "Please draft a short letter from "+self.sender.name+'. '
-        string += "The letter is addressed to "+self.recipient.name+', '+self.sender.getrelation(self.recipient)+'. '
-        string += "Its style is "+self.sender.personality+' and the writing is '+skilladjectives[self.sender.writing]+'. '
+        string += "The letter is addressed to "+self.recipient.name+', '+str(Relation(self.sender,self.recipient))+'. '
+        string += "Its style is "+self.sender.personality+' and the writing is '+str(self.sender.writing)+'. '
         if len(self.codecontents)==1:
             string += "The letter contains "+self.codecontents[0]
         else:
@@ -29,4 +31,5 @@ class Letter:
         return self.contents
 
 peep = Person()
-print(Letter(sender=peep,recipient=Person()))
+child = peep.havechildwith(Person())
+print(Letter(sender=peep,recipient=child))

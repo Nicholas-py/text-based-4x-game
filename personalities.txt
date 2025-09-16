@@ -10,6 +10,9 @@ trustworthy
 ambitious
 energetic
 brave
+generous
+traditionalistic
+perceptive
 confident
 assertive
 eloquent
@@ -23,6 +26,9 @@ emotional
 paranoid
 paranoid
 smug
+unemotional
+distant
+robotic
 vain
 deceitful
 cruel
@@ -32,3 +38,5 @@ bossy
 pessimistic
 depressed
 aggressive
+ill-tempered 
+sleepy
