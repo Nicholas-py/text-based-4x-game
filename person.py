@@ -1,7 +1,6 @@
 from random import *
 from coords import Coords
 from skill import Skill
-from relation import Relation
 
 fnames = open('fnames.txt','r').read().split('\n')
 lnames = open('lnames.txt','r').read().split('\n')
@@ -15,39 +14,51 @@ class Person:
                  location = Coords(0,0),
                  personality = None,
                  title = '',
-                 parents = [None, None]):
-        self.country = country
+                 parents = [None, None],
+                 spouse = None):
+        
         if not gender:
             gender = choice(['M','F'])
         self.gender = gender
+
+        self.country = country
         self.parents = parents
         self.children = []
+        self.spouse = spouse
+        self.adoptedparents = None
+        self.location = location
+        self.title = title
+
         if not name:
             name = self.makename(parents[0])
         self.name = name
+
         if not personality:
             personality = self.makepersonality(choice(self.parents))
         self.personality = personality
 
-        self.location = location
-        self.title = title
         self.diplomacy,self.oration,self.persuasion, self.strategy, self.strength, self.writing = self.makeskills()
+
         self.index = Person.lastindex
         Person.lastindex += 1
-
-    def getrelation(self,other):
-        if self.index == other.index:
-            return 'the same person'
-        elif other in self.parents:
-            return ''
-        else:
-            return 'a complete stranger'
 
     def havechildwith(self, otherparent):
         child = Person(parents=[self,otherparent],country=self.country)
         self.children.append(child)
         otherparent.children.append(child)
         return child
+
+    def marry(self, other):
+        self.spouse = other.spouse
+        other.spouse = self.spouse
+
+    def adopt(self,child, otherparent=None):
+        if otherparent:
+            child.adoptedparents = [self, otherparent]
+            otherparent.children.append(child)
+        else:
+            child.adoptedparents = [self]
+        self.children.append(child)
 
     def makeskills(self):
         if self.parents[0] == None and self.parents[1] == None:
@@ -61,7 +72,7 @@ class Person:
                 p2skills = self.parents[1].packskills()
                 newskills = (Skill.randnear2(p1skills[i],p2skills[i]) for i in range(len(p1skills)))
                 return newskills
-            
+
     def packskills(self):
         return (self.diplomacy,self.oration,self.persuasion, self.strategy, self.strength, self.writing)
 
@@ -111,18 +122,4 @@ class Person:
         string += str(self.writing)+' at writing. '
         return string
 
-gp1, gp2 = Person(), Person()
-print(gp1.name, '+',gp2.name,'=')
-parent1,parent2,parent3 = (gp1.havechildwith(gp2),gp1.havechildwith(gp2),gp1.havechildwith(gp2))
-print(parent1.name)
-print('and')
-print(parent2.name)
-print('had a child:')
-child = (parent1.havechildwith(Person()))
-child2 = (parent2.havechildwith(Person()))
-print(child.name)
-x,y = parent3, child
-a = (Relation(x, y))
-print(x.name,': ',y.name,a.getrelationname(child))
-print(child)
 
