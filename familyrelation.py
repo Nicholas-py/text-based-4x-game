@@ -1,6 +1,8 @@
 from collections import deque
 import random
-random.seed(1)
+#random.seed(1)
+
+#Warning - code has issues dealing with incest and siblings marrying siblings 
 class FamilyRelation:
     maxsearch = 3
     def __init__(self, p1, p2):
