@@ -22,12 +22,14 @@ class Person:
         self.gender = gender
 
         self.country = country
+        self.location = location
+        self.title = title
+
+        #family
         self.parents = parents
         self.children = []
         self.spouse = spouse
-        self.adoptedparents = None
-        self.location = location
-        self.title = title
+        self.adoptedparents = []
 
         if not name:
             name = self.makename(parents[0])
@@ -49,8 +51,9 @@ class Person:
         return child
 
     def marry(self, other):
-        self.spouse = other.spouse
-        other.spouse = self.spouse
+        self.spouse = other
+        other.spouse = self
+        return other
 
     def adopt(self,child, otherparent=None):
         if otherparent:
@@ -59,7 +62,8 @@ class Person:
         else:
             child.adoptedparents = [self]
         self.children.append(child)
-
+        return child
+    
     def makeskills(self):
         if self.parents[0] == None and self.parents[1] == None:
             return (Skill(),Skill(),Skill(),Skill(),Skill(),Skill())
@@ -111,7 +115,7 @@ class Person:
         return p1 +' and '+ p2
 
 
-    def __repr__(self):
+    def __str__(self):
         string =  self.title + self.name+', of '+self.country+'. '
         string += 'Is '+self.personality+'. '
         string += 'Is '+str(self.strength)+' physically, '
@@ -121,5 +125,8 @@ class Person:
         string += str(self.strategy)+' at military strategy, and '
         string += str(self.writing)+' at writing. '
         return string
+    
+    def __repr__(self):
+        return self.title + self.name
 
 

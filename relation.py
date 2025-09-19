@@ -1,4 +1,4 @@
-from famliyrelation import FamilyRelation
+from familyrelation import FamilyRelation
 
 class Relation:
     def __init__(self,p1,p2):
@@ -10,4 +10,5 @@ class Relation:
             self.familyrelation = None
         
     def __repr__(self):
-        return ''
+        if self.familyrelation:
+            return str(self.familyrelation)
