@@ -1,7 +1,7 @@
 from random import *
 from coords import Coords
 from skill import Skill
-
+from relation import Relation
 fnames = open('fnames.txt','r').read().split('\n')
 lnames = open('lnames.txt','r').read().split('\n')
 personalities = open('personalities.txt').read().split('\n')
@@ -20,10 +20,13 @@ class Person:
         if not gender:
             gender = choice(['M','F'])
         self.gender = gender
+        self.pronoun1 = ['he','she'][self.gender == 'F']
+        self.pronoun2 = ['his','her'][self.gender == 'F']
 
         self.country = country
         self.location = location
         self.title = title
+        self.group = None
 
         #family
         self.parents = parents
@@ -43,6 +46,21 @@ class Person:
 
         self.index = Person.lastindex
         Person.lastindex += 1
+
+    def getrelationto(self,other) -> Relation:
+        return Relation.get(self,other)
+    
+    def changeclosenessto(self,other,amount=1):
+        Relation.get(self,other).changecloseness(amount)
+    
+    def changelikingof(self,other,amount=1):
+        Relation.get(self,other).changelikingfrom(self,amount)
+
+    def firstname(self):
+        return self.name.split(' ')[0]
+    
+    def lastname(self):
+        return self.name.split(' ')[2]
 
     def havechildwith(self, otherparent):
         child = Person(parents=[self,otherparent],country=self.country)

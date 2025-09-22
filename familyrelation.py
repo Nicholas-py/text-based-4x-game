@@ -75,7 +75,7 @@ class FamilyRelation:
             p1,p2,p1gens,p2gens = self.p1,self.p2,self.p1gens,self.p2gens
         else:
             raise Exception("person not member of relation")
-        hir = {'M':'his ','F':'her '}[p1.gender]
+        hir = p1.pronoun2+' '
 
         val = ''
         if self.adopted:
@@ -98,53 +98,54 @@ class FamilyRelation:
 
     def __repr__(self):
         return self.getrelationname()
+    
+if __name__ == '__main__':
+    from person import Person
+    gp1, gp2, gp3, gp4 = Person(), Person(), Person(), Person()
+    gp1.marry(gp2); gp3.marry(gp4)
+    print(gp1.name, '+',gp2.name,'     ',gp3.name,'+',gp4.name)
+    parent1,parent2,parent3 = (gp1.havechildwith(gp2),gp1.havechildwith(gp2),gp3.havechildwith(gp4))
+    parent1.marry(parent3)
+    print(parent1.name,'  ',parent2.name,'         ',parent3.name,)
+    childadopt = parent1.adopt(Person(), parent3)
+    print(childadopt.name)
+    print()
+    print(parent1.name,'+', parent3.name,'=')
+    child = (parent1.havechildwith(parent3))
+    child2 = (parent1.havechildwith(parent3))
+    sil = Person()
+    child.marry(sil)
+    print(child.name,'and',child2.name)
+    print(child.name,'married',sil.name)
+    child.adopt(gp1, sil)
+    x,y =   sil,gp1
+    print('\ntesting relation of',x.name,y.name)
+    a = (FamilyRelation(x, y))
+    print('p1gens',a.p1gens,'p2gens',a.p2gens)
+    print(x.name,'is',y.name+'\'s',a.getrelationname(x,include_hisher=False))
+    #should be adopted father
 
-from person import Person
-gp1, gp2, gp3, gp4 = Person(), Person(), Person(), Person()
-gp1.marry(gp2); gp3.marry(gp4)
-print(gp1.name, '+',gp2.name,'     ',gp3.name,'+',gp4.name)
-parent1,parent2,parent3 = (gp1.havechildwith(gp2),gp1.havechildwith(gp2),gp3.havechildwith(gp4))
-parent1.marry(parent3)
-print(parent1.name,'  ',parent2.name,'         ',parent3.name,)
-childadopt = parent1.adopt(Person(), parent3)
-print(childadopt.name)
-print()
-print(parent1.name,'+', parent3.name,'=')
-child = (parent1.havechildwith(parent3))
-child2 = (parent1.havechildwith(parent3))
-sil = Person()
-child.marry(sil)
-print(child.name,'and',child2.name)
-print(child.name,'married',sil.name)
-child.adopt(gp1, sil)
-x,y =   sil,gp1
-print('\ntesting relation of',x.name,y.name)
-a = (FamilyRelation(x, y))
-print('p1gens',a.p1gens,'p2gens',a.p2gens)
-print(x.name,'is',y.name+'\'s',a.getrelationname(x,include_hisher=False))
-#should be adopted father
-
-dad=Person()
-son = dad.havechildwith(Person())
-wife = Person()
-granddaughter = wife.havechildwith(Person())
-son.marry(wife)
-dad.marry(granddaughter)
-print('dad married his son\'s daughter')
-print('dad and son\'s wife =',FamilyRelation(dad,wife))
+    dad=Person()
+    son = dad.havechildwith(Person())
+    wife = Person()
+    granddaughter = wife.havechildwith(Person())
+    son.marry(wife)
+    dad.marry(granddaughter)
+    print('dad married his son\'s daughter')
+    print('dad and son\'s wife =',FamilyRelation(dad,wife))
 
 
 
-human = Person(gender='F',name='Human Aurelia aosis')
-other = Person(gender='M', name='Name Lucius apjs')
-human.marry(other)
-print(human,other)
-for i in range(1):
-    child = other.havechildwith(human)
-    wifey = child.marry(Person())
+    human = Person(gender='F',name='Human Aurelia aosis')
+    other = Person(gender='M', name='Name Lucius apjs')
+    human.marry(other)
+    print(human,other)
     for i in range(1):
-        c2 = wifey.havechildwith(child)
-        wifey2 = c2.marry(Person())
+        child = other.havechildwith(human)
+        wifey = child.marry(Person())
         for i in range(1):
-            c3 = wifey2.havechildwith(c2)
-    print(c2,c2.index)
+            c2 = wifey.havechildwith(child)
+            wifey2 = c2.marry(Person())
+            for i in range(1):
+                c3 = wifey2.havechildwith(c2)
+        print(c2,c2.index)
