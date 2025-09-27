@@ -38,5 +38,5 @@ bossy
 pessimistic
 depressed
 aggressive
-ill-tempered 
+ill-tempered
 sleepy

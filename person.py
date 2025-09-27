@@ -27,6 +27,7 @@ class Person:
         self.location = location
         self.title = title
         self.group = None
+        self.possessions = []
 
         #family
         self.parents = parents
@@ -82,6 +83,10 @@ class Person:
         self.children.append(child)
         return child
     
+    def recieve(self,possession):
+        self.possessions.append(possession)
+        return possession
+
     def makeskills(self):
         if self.parents[0] == None and self.parents[1] == None:
             return (Skill(),Skill(),Skill(),Skill(),Skill(),Skill())
