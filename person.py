@@ -2,6 +2,7 @@ from random import *
 from coords import Coords
 from skill import Skill
 from relation import Relation
+
 fnames = open('fnames.txt','r').read().split('\n')
 lnames = open('lnames.txt','r').read().split('\n')
 personalities = open('personalities.txt').read().split('\n')
@@ -86,6 +87,9 @@ class Person:
     def recieve(self,possession):
         self.possessions.append(possession)
         return possession
+
+    def doaction(self, action):
+        action.actiontype.oncall(self, action.args)
 
     def makeskills(self):
         if self.parents[0] == None and self.parents[1] == None:
