@@ -58,7 +58,7 @@ class Relation:
     def hash(p1,p2):
         return str(min(p1.index,p2.index)) + ':'+str(max(p1.index,p2.index))
 
-    def getcloseness(self):
+    def getcloseness(self, num=False):
         lst = [
             'They do not know each other',
             'They barely know each other',
@@ -67,10 +67,12 @@ class Relation:
             'They are extremely familiar with each other',
             'They know each other as well as possible'
         ]
+        if num:
+            lst = range(6)
         return lst[int(self.closeness)]
     
     #For use in - he/she ____ him/her
-    def getliking(self,fromperson):
+    def getliking(self,fromperson, num=False):
         lst = [
             'eternally hates',
             'hates',
@@ -84,6 +86,8 @@ class Relation:
             'is very fond of',
             'dearly loves'
         ]
+        if num:
+            lst = range(-5,6)
         if fromperson == self.p1:
             return lst[self.p2liking+5]
         elif fromperson == self.p2:

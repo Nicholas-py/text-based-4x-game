@@ -1,7 +1,7 @@
 from actiontype import ActionType
 from weapons import Weapon
 import random
-from llm import syncresponse
+from relation import Relation
 
 def getweapon(person):
     weaponstrength = 0
@@ -38,6 +38,11 @@ def kill(caller, args)->str:
         event = 'backkill'
     else:
         event = 'fail'
+    
+    relation = Relation(caller, target)
+    relation.changecloseness(1)
+    relation.changelikingfrom(target,-10)
+
 
     prompt = 'Please provide a brief description of the following event to completion, to be used as narration in a novel. \
 Avoid adding details not provided to you, and describe it in past tense\n'
