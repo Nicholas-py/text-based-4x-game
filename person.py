@@ -2,6 +2,7 @@ from random import *
 from coords import Coords
 from skill import Skill
 from relation import Relation
+from llm import syncresponse
 
 fnames = open('fnames.txt','r').read().split('\n')
 lnames = open('lnames.txt','r').read().split('\n')
@@ -22,7 +23,8 @@ class Person:
             gender = choice(['M','F'])
         self.gender = gender
         self.pronoun1 = ['he','she'][self.gender == 'F']
-        self.pronoun2 = ['his','her'][self.gender == 'F']
+        self.pronoun2 = ['him','her'][self.gender == 'F']
+        self.pronoun3 = ['his','her'][self.gender == 'F']
 
         self.country = country
         self.location = location
@@ -45,6 +47,12 @@ class Person:
         self.personality = personality
 
         self.diplomacy,self.oration,self.persuasion, self.strategy, self.strength, self.writing = self.makeskills()
+
+        self.dead = False
+        self.thoughts = []
+        self.happiness = 0 #-5 to 5
+        self.energy = 0 # -5 to 5
+        self.sublocation = None #Home, the Forum, a fort, etc
 
         self.index = Person.lastindex
         Person.lastindex += 1
@@ -89,7 +97,9 @@ class Person:
         return possession
 
     def doaction(self, action):
-        action.actiontype.oncall(self, action.args)
+        prompt = action.actiontype.oncall(self, action.args)
+        print(syncresponse(prompt+'Please only provide one sentence'))
+        print(syncresponse(prompt))
 
     def makeskills(self):
         if self.parents[0] == None and self.parents[1] == None:
@@ -144,6 +154,9 @@ class Person:
 
     def __str__(self):
         string =  self.title + self.name+', of '+self.country+'. '
+        if self.dead:
+            string += 'Is dead.'
+            return string
         string += 'Is '+self.personality+'. '
         string += 'Is '+str(self.strength)+' physically, '
         string += str(self.persuasion)+' at negotiation, '

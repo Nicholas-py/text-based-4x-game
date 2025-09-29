@@ -33,7 +33,7 @@ class Letter:
             self.codecontents[-1] = 'and '+ self.codecontents[-1]
             string += "The letter contains "+', '.join(self.codecontents)
         string += '. Do not include anything other than the contents of the letter'
-        string += 'from '+self.sender.firstname()+' to '+self.sender.pronoun2 +' '+ relation.getstr(self.sender,False)
+        string += 'from '+self.sender.firstname()+' to '+self.sender.pronoun3 +' '+ relation.getstr(self.sender,False)
         print('\nPROMPT\n',string)
         return string
 

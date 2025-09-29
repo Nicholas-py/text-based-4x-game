@@ -20,6 +20,9 @@ class Skill:
         val = randint(minv-1, maxv+1)
         return Skill(val)
 
+    def __int__(self):
+        return self.value
+
     def __repr__(self):
         skilladjectives = ['absolutely horrible','horrible','awful','bad','not great','average','decent','good','great','incredible','absolutely incredible']
         return skilladjectives[self.value]

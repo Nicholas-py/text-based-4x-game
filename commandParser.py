@@ -8,6 +8,7 @@ from person import Person
 #MASTER LIST OF ALL COMMANDS
 ####
 commands = [Kill]
+max_command_word_count = 4
 
 class ParserError(Exception):
     pass
@@ -23,39 +24,63 @@ def getcommandlist(commands):
 def getperson(tokens):
     return Person(name=' '.join(tokens[0:3])),3
 
+def getpossession(tokens):
+    return tokens[0],1
+
+
+
 def parseargs(tokens, targetargs):
-    outputs = []
-    for i in targetargs:
-        if len(tokens) == 0:
-            raise ParserError("Not enough arguments given")
-        match i:
-            case 'Person':
-                person, numused = getperson(tokens)
-                outputs.append(person)
-                tokens = tokens[numused:]
-            
+    for i in tokens:
+        if i == '':
+            tokens.remove(i)
+    basetokens = tokens
+    for argpattern in targetargs:
+        tokens = basetokens.copy()
+        outputs = []
+        matched = True
+        for term in argpattern.split(' '):
+            if len(tokens) == 0:
+                matched = False
+                break
+            arg = None
+            numused = 1
+            match term:
+                case 'Person':
+                    arg, numused = getperson(tokens)
+                case 'Possession':
+                    arg, numused = getpossession(tokens)
+            if arg:
+                outputs.append(arg)
+            tokens = tokens[numused:]
+        if len(tokens):
+            matched = False
+        
+        if matched:
+            return outputs
+    raise   ParserError('Arguments supplied did not match any overloads')         
 
 primarys = [i.synonyms[0] for i in commands]
 allsupported = getcommandlist(commands)
 
 def parse(userstring) -> Action:
     tokens = userstring.split(' ')
-    if tokens[0] in allsupported:
-        command = allsupported[tokens[0]]
-        
-        if isinstance(command, ActionType):
-            try:
-                args = parseargs(tokens[1:], command.args)
-                return Action(command, args)
-            except ParserError as e:
-                print('Argument Error: ',e)
-        else:
-            print('Action type unknown. This is weird.')
+    for i in range(1,max_command_word_count+1):
+        commandname = ' '.join(tokens[0:i])
+        if commandname in allsupported:
+            command = allsupported[commandname]
+            
+            if isinstance(command, ActionType):
+                try:
+                    args = parseargs(tokens[i:], command.args)
+                    return Action(command, args)
+                except ParserError as e:
+                    print('Argument Error: ',e)
+            else:
+                print('Action type unknown. This is weird.')
     else:
         print('Command not found')
 
 if __name__ == '__main__':
-    print(allsupported)
     you = Person()
     print('You are:',you)
     print('Enter commands here.')

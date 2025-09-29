@@ -1,4 +1,5 @@
 from coords import Coords
+from weapons import Weapon
 
 class Possession:
     def __init__(self, 
@@ -10,7 +11,11 @@ class Possession:
         self.itemtype = itemtype
         self.location = location
         self.owner = owner
+        self.onowner = False
         self.condition = condition
+
+        if Weapon.isit(self):
+            self.weapon = Weapon(self.itemtype)
 
     def __repr__(self):
         string =  'a '+self.itemtype
